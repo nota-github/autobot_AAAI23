@@ -1,0 +1,551 @@
+01/29 09:37:37 PM | args = Namespace(output_dir='result/rebuttal/nb_epoch/vgg/nbbtchs4/seed_02', loaded_model_path='./checkpoints/cifar10/vgg_16_bn.pt', resume=False, test_only=False, mode='prune', batch_size=64, nb_batches=4, Mflops_target=None, lr=0.6, momentum=0.9, beta=6, gamma=0.4, gpu='0', num_workers=4, dataset='cifar10', arch='vgg_16_bn', save_plot=False, seed=2, lr_finetuning=0.02, epoch_finetuning=200, wd=0.002, data_dir='./data/cifar10/', print_freq=200, num_classes=10, device_ids=[0], device=device(type='cuda', index=0), name_base='')
+01/29 09:37:42 PM | ----------------------------------------
+01/29 09:37:42 PM | ==> Building model...
+01/29 09:37:42 PM | ----------------------------------------
+01/29 09:37:42 PM | ==> Loading weights into the model...
+01/29 09:37:42 PM | ----------------------------------------
+01/29 09:37:42 PM | VGG(
+  (features): Sequential(
+    (conv0): Conv2d(3, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm0): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu0): ReLU(inplace=True)
+    (conv1): Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm1): BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu1): ReLU(inplace=True)
+    (pool2): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (conv3): Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm3): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu3): ReLU(inplace=True)
+    (conv4): Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm4): BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu4): ReLU(inplace=True)
+    (pool5): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (conv6): Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm6): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu6): ReLU(inplace=True)
+    (conv7): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm7): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu7): ReLU(inplace=True)
+    (conv8): Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm8): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu8): ReLU(inplace=True)
+    (pool9): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (conv10): Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm10): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu10): ReLU(inplace=True)
+    (conv11): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm11): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu11): ReLU(inplace=True)
+    (conv12): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm12): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu12): ReLU(inplace=True)
+    (pool13): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (conv14): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm14): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu14): ReLU(inplace=True)
+    (conv15): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm15): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu15): ReLU(inplace=True)
+    (conv16): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm16): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu16): ReLU(inplace=True)
+  )
+  (classifier): Sequential(
+    (linear1): Linear(in_features=512, out_features=512, bias=True)
+    (norm1): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu1): ReLU(inplace=True)
+    (linear2): Linear(in_features=512, out_features=10, bias=True)
+  )
+)
+01/29 09:37:44 PM | Save modules info...
+01/29 09:37:44 PM | FLOPS pruning ratio is 0.65
+01/29 09:37:44 PM | Pruning with information flow
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: Conv2d(3, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+01/29 09:37:44 PM | cin: None
+01/29 09:37:44 PM | cout: [0]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+01/29 09:37:44 PM | cin: [0]
+01/29 09:37:44 PM | cout: [0]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: ReLU(inplace=True)
+01/29 09:37:44 PM | cin: [0]
+01/29 09:37:44 PM | cout: [0]
+01/29 09:37:44 PM | active
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: Conv2d(64, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+01/29 09:37:44 PM | cin: [0]
+01/29 09:37:44 PM | cout: [1]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: BatchNorm2d(64, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+01/29 09:37:44 PM | cin: [1]
+01/29 09:37:44 PM | cout: [1]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: ReLU(inplace=True)
+01/29 09:37:44 PM | cin: [1]
+01/29 09:37:44 PM | cout: [1]
+01/29 09:37:44 PM | active
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+01/29 09:37:44 PM | cin: [1]
+01/29 09:37:44 PM | cout: [1]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: Conv2d(64, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+01/29 09:37:44 PM | cin: [1]
+01/29 09:37:44 PM | cout: [2]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+01/29 09:37:44 PM | cin: [2]
+01/29 09:37:44 PM | cout: [2]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: ReLU(inplace=True)
+01/29 09:37:44 PM | cin: [2]
+01/29 09:37:44 PM | cout: [2]
+01/29 09:37:44 PM | active
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: Conv2d(128, 128, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+01/29 09:37:44 PM | cin: [2]
+01/29 09:37:44 PM | cout: [3]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: BatchNorm2d(128, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+01/29 09:37:44 PM | cin: [3]
+01/29 09:37:44 PM | cout: [3]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: ReLU(inplace=True)
+01/29 09:37:44 PM | cin: [3]
+01/29 09:37:44 PM | cout: [3]
+01/29 09:37:44 PM | active
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+01/29 09:37:44 PM | cin: [3]
+01/29 09:37:44 PM | cout: [3]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: Conv2d(128, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+01/29 09:37:44 PM | cin: [3]
+01/29 09:37:44 PM | cout: [4]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+01/29 09:37:44 PM | cin: [4]
+01/29 09:37:44 PM | cout: [4]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: ReLU(inplace=True)
+01/29 09:37:44 PM | cin: [4]
+01/29 09:37:44 PM | cout: [4]
+01/29 09:37:44 PM | active
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+01/29 09:37:44 PM | cin: [4]
+01/29 09:37:44 PM | cout: [5]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+01/29 09:37:44 PM | cin: [5]
+01/29 09:37:44 PM | cout: [5]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: ReLU(inplace=True)
+01/29 09:37:44 PM | cin: [5]
+01/29 09:37:44 PM | cout: [5]
+01/29 09:37:44 PM | active
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: Conv2d(256, 256, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+01/29 09:37:44 PM | cin: [5]
+01/29 09:37:44 PM | cout: [6]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+01/29 09:37:44 PM | cin: [6]
+01/29 09:37:44 PM | cout: [6]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: ReLU(inplace=True)
+01/29 09:37:44 PM | cin: [6]
+01/29 09:37:44 PM | cout: [6]
+01/29 09:37:44 PM | active
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+01/29 09:37:44 PM | cin: [6]
+01/29 09:37:44 PM | cout: [6]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+01/29 09:37:44 PM | cin: [6]
+01/29 09:37:44 PM | cout: [7]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+01/29 09:37:44 PM | cin: [7]
+01/29 09:37:44 PM | cout: [7]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: ReLU(inplace=True)
+01/29 09:37:44 PM | cin: [7]
+01/29 09:37:44 PM | cout: [7]
+01/29 09:37:44 PM | active
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+01/29 09:37:44 PM | cin: [7]
+01/29 09:37:44 PM | cout: [8]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+01/29 09:37:44 PM | cin: [8]
+01/29 09:37:44 PM | cout: [8]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: ReLU(inplace=True)
+01/29 09:37:44 PM | cin: [8]
+01/29 09:37:44 PM | cout: [8]
+01/29 09:37:44 PM | active
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+01/29 09:37:44 PM | cin: [8]
+01/29 09:37:44 PM | cout: [9]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+01/29 09:37:44 PM | cin: [9]
+01/29 09:37:44 PM | cout: [9]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: ReLU(inplace=True)
+01/29 09:37:44 PM | cin: [9]
+01/29 09:37:44 PM | cout: [9]
+01/29 09:37:44 PM | active
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+01/29 09:37:44 PM | cin: [9]
+01/29 09:37:44 PM | cout: [9]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+01/29 09:37:44 PM | cin: [9]
+01/29 09:37:44 PM | cout: [10]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+01/29 09:37:44 PM | cin: [10]
+01/29 09:37:44 PM | cout: [10]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: ReLU(inplace=True)
+01/29 09:37:44 PM | cin: [10]
+01/29 09:37:44 PM | cout: [10]
+01/29 09:37:44 PM | active
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+01/29 09:37:44 PM | cin: [10]
+01/29 09:37:44 PM | cout: [11]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+01/29 09:37:44 PM | cin: [11]
+01/29 09:37:44 PM | cout: [11]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: ReLU(inplace=True)
+01/29 09:37:44 PM | cin: [11]
+01/29 09:37:44 PM | cout: [11]
+01/29 09:37:44 PM | active
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+01/29 09:37:44 PM | cin: [11]
+01/29 09:37:44 PM | cout: [12]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+01/29 09:37:44 PM | cin: [12]
+01/29 09:37:44 PM | cout: [12]
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: ReLU(inplace=True)
+01/29 09:37:44 PM | cin: [12]
+01/29 09:37:44 PM | cout: [12]
+01/29 09:37:44 PM | active
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: Linear(in_features=512, out_features=512, bias=True)
+01/29 09:37:44 PM | cin: [12]
+01/29 09:37:44 PM | cout: None
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: ReLU(inplace=True)
+01/29 09:37:44 PM | cin: None
+01/29 09:37:44 PM | cout: None
+01/29 09:37:44 PM | active
+01/29 09:37:44 PM | -----
+01/29 09:37:44 PM | module: Linear(in_features=512, out_features=10, bias=True)
+01/29 09:37:44 PM | cin: None
+01/29 09:37:44 PM | cout: None
+01/29 09:37:44 PM | inactive
+01/29 09:37:44 PM | Used masks: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+01/29 09:37:44 PM | 13 unique masks in total
+01/29 09:37:45 PM | === Batch 1/4
+01/29 09:37:45 PM | loss = 0.166 + 4.266 + 0.040 = 4.472
+01/29 09:37:45 PM | attribution_score[0:12]: 
+[ 0.83  0.94  0.83  0.83  0.83  0.83  0.83  0.83  0.83  0.94  0.83  0.94 ]
+[ 0.94  0.83  0.94  0.83  0.94  0.83  0.94  0.83  0.83  0.94  0.83  0.83 ]
+[ 0.94  0.94  0.83  0.94  0.83  0.83  0.94  0.94  0.83  0.83  0.83  0.94 ]
+[ 0.83  0.94  0.94  0.94  0.94  0.94  0.83  0.83  0.94  0.83  0.94  0.94 ]
+[ 0.94  0.83  0.83  0.83  0.83  0.94  0.83  0.83  0.83  0.83  0.83  0.83 ]
+[ 0.83  0.83  0.83  0.94  0.83  0.83  0.94  0.83  0.83  0.83  0.83  0.83 ]
+[ 0.94  0.83  0.83  0.83  0.83  0.83  0.94  0.83  0.94  0.83  0.94  0.83 ]
+[ 0.83  0.83  0.83  0.83  0.83  0.83  0.94  0.83  0.83  0.94  0.83  0.83 ]
+[ 0.83  0.83  0.83  0.83  0.83  0.83  0.83  0.83  0.83  0.83  0.83  0.83 ]
+[ 0.83  0.83  0.83  0.83  0.83  0.83  0.83  0.83  0.83  0.83  0.83  0.83 ]
+[ 0.83  0.83  0.83  0.83  0.83  0.83  0.83  0.83  0.83  0.83  0.94  0.83 ]
+[ 0.83  0.94  0.83  0.83  0.83  0.83  0.83  0.94  0.83  0.83  0.83  0.83 ]
+[ 0.94  0.94  0.94  0.83  0.94  0.94  0.83  0.83  0.83  0.94  0.83  0.83 ]
+
+01/29 09:37:45 PM | === Batch 2/4
+01/29 09:37:45 PM | loss = 0.241 + 3.587 + 0.056 = 3.884
+01/29 09:37:46 PM | attribution_score[0:12]: 
+[ 0.88  0.97  0.73  0.75  0.73  0.74  0.75  0.73  0.73  0.93  0.73  0.96 ]
+[ 0.94  0.73  0.95  0.73  0.94  0.86  0.94  0.74  0.75  0.96  0.87  0.74 ]
+[ 0.96  0.96  0.73  0.96  0.76  0.88  0.94  0.95  0.73  0.73  0.84  0.95 ]
+[ 0.78  0.91  0.91  0.97  0.96  0.97  0.79  0.74  0.94  0.75  0.92  0.95 ]
+[ 0.96  0.88  0.75  0.73  0.81  0.96  0.73  0.73  0.87  0.75  0.78  0.75 ]
+[ 0.73  0.86  0.74  0.94  0.79  0.75  0.92  0.73  0.75  0.74  0.73  0.74 ]
+[ 0.94  0.74  0.80  0.82  0.73  0.73  0.94  0.87  0.96  0.85  0.97  0.77 ]
+[ 0.73  0.73  0.73  0.73  0.74  0.75  0.96  0.73  0.73  0.91  0.73  0.74 ]
+[ 0.74  0.73  0.73  0.73  0.76  0.73  0.73  0.73  0.81  0.73  0.73  0.85 ]
+[ 0.74  0.74  0.73  0.73  0.75  0.76  0.73  0.73  0.74  0.73  0.74  0.76 ]
+[ 0.73  0.88  0.81  0.74  0.73  0.73  0.84  0.86  0.73  0.77  0.97  0.88 ]
+[ 0.88  0.97  0.82  0.87  0.88  0.78  0.87  0.97  0.76  0.76  0.87  0.76 ]
+[ 0.96  0.97  0.97  0.86  0.96  0.96  0.85  0.88  0.88  0.95  0.75  0.75 ]
+
+01/29 09:37:46 PM | === Batch 3/4
+01/29 09:37:46 PM | loss = 0.187 + 2.847 + 0.073 = 3.107
+01/29 09:37:46 PM | attribution_score[0:12]: 
+[ 0.91  0.98  0.62  0.63  0.61  0.62  0.63  0.60  0.60  0.91  0.61  0.96 ]
+[ 0.94  0.60  0.94  0.60  0.92  0.88  0.93  0.62  0.65  0.97  0.90  0.62 ]
+[ 0.97  0.98  0.61  0.97  0.65  0.91  0.92  0.95  0.60  0.62  0.79  0.95 ]
+[ 0.69  0.87  0.87  0.98  0.96  0.98  0.72  0.61  0.94  0.63  0.88  0.96 ]
+[ 0.97  0.92  0.73  0.60  0.77  0.96  0.60  0.61  0.91  0.69  0.74  0.72 ]
+[ 0.60  0.89  0.62  0.92  0.72  0.65  0.87  0.60  0.65  0.62  0.60  0.61 ]
+[ 0.92  0.62  0.73  0.77  0.65  0.60  0.91  0.86  0.97  0.89  0.98  0.70 ]
+[ 0.60  0.60  0.60  0.60  0.62  0.65  0.96  0.60  0.60  0.86  0.60  0.63 ]
+[ 0.62  0.60  0.60  0.60  0.66  0.60  0.60  0.60  0.76  0.60  0.60  0.87 ]
+[ 0.62  0.61  0.61  0.60  0.64  0.66  0.60  0.60  0.61  0.60  0.61  0.65 ]
+[ 0.60  0.92  0.83  0.61  0.60  0.61  0.86  0.87  0.60  0.69  0.98  0.86 ]
+[ 0.91  0.98  0.78  0.91  0.92  0.72  0.90  0.98  0.65  0.78  0.90  0.65 ]
+[ 0.97  0.98  0.98  0.81  0.97  0.98  0.88  0.92  0.91  0.96  0.77  0.66 ]
+
+01/29 09:37:46 PM | === Batch 4/4
+01/29 09:37:46 PM | loss = 0.400 + 1.920 + 0.096 = 2.415
+01/29 09:37:46 PM | attribution_score[0:12]: 
+[ 0.94  0.98  0.50  0.49  0.46  0.48  0.49  0.46  0.45  0.86  0.46  0.96 ]
+[ 0.93  0.46  0.92  0.45  0.90  0.89  0.92  0.49  0.53  0.96  0.93  0.48 ]
+[ 0.97  0.98  0.47  0.97  0.53  0.93  0.90  0.95  0.45  0.48  0.72  0.95 ]
+[ 0.57  0.80  0.81  0.98  0.97  0.98  0.73  0.47  0.94  0.58  0.82  0.97 ]
+[ 0.97  0.93  0.69  0.51  0.80  0.96  0.45  0.47  0.93  0.59  0.76  0.64 ]
+[ 0.46  0.90  0.47  0.90  0.61  0.51  0.83  0.47  0.53  0.48  0.46  0.55 ]
+[ 0.88  0.51  0.62  0.70  0.54  0.46  0.89  0.87  0.97  0.92  0.99  0.60 ]
+[ 0.45  0.47  0.47  0.46  0.49  0.53  0.96  0.45  0.46  0.79  0.47  0.52 ]
+[ 0.48  0.53  0.45  0.50  0.54  0.45  0.45  0.50  0.70  0.45  0.55  0.90 ]
+[ 0.50  0.47  0.46  0.45  0.51  0.54  0.45  0.45  0.47  0.45  0.52  0.54 ]
+[ 0.46  0.95  0.88  0.51  0.50  0.48  0.90  0.88  0.65  0.74  0.99  0.82 ]
+[ 0.93  0.99  0.78  0.95  0.95  0.74  0.93  0.99  0.58  0.81  0.93  0.52 ]
+[ 0.98  0.99  0.99  0.74  0.98  0.99  0.92  0.95  0.94  0.96  0.76  0.54 ]
+
+01/29 09:37:47 PM | ===
+Best loss was 2.42 at iteration 4
+
+01/29 09:37:47 PM | Looking for optimal threshold...
+01/29 09:37:47 PM | Testing threshold 0.5
+01/29 09:37:47 PM | Distance to target: 205,684,272
+01/29 09:37:47 PM | Testing threshold 0.75
+01/29 09:37:47 PM | Distance to target: 44,268,948
+01/29 09:37:47 PM | Testing threshold 0.625
+01/29 09:37:47 PM | Distance to target: 24,226,016
+01/29 09:37:47 PM | Testing threshold 0.6875
+01/29 09:37:47 PM | Distance to target: 29,695,568
+01/29 09:37:47 PM | Testing threshold 0.65625
+01/29 09:37:47 PM | Distance to target: 20,059,576
+01/29 09:37:47 PM | Testing threshold 0.640625
+01/29 09:37:47 PM | Distance to target: 2,831,896
+01/29 09:37:47 PM | Testing threshold 0.6328125
+01/29 09:37:47 PM | Distance to target: 10,224,384
+01/29 09:37:47 PM | Testing threshold 0.63671875
+01/29 09:37:47 PM | Distance to target: 3,759,696
+01/29 09:37:47 PM | Testing threshold 0.638671875
+01/29 09:37:47 PM | Distance to target: 227,176
+01/29 09:37:47 PM | Testing threshold 0.6376953125
+01/29 09:37:47 PM | Distance to target: 1,916,728
+01/29 09:37:47 PM | Testing threshold 0.63818359375
+01/29 09:37:47 PM | Distance to target: 724,720
+01/29 09:37:47 PM | Testing threshold 0.638427734375
+01/29 09:37:47 PM | Distance to target: 130,856
+01/29 09:37:47 PM | Testing threshold 0.6385498046875
+01/29 09:37:47 PM | Distance to target: 109,464
+01/29 09:37:47 PM | Testing threshold 0.63861083984375
+01/29 09:37:47 PM | Distance to target: 80,744
+01/29 09:37:47 PM | Testing threshold 0.638580322265625
+01/29 09:37:47 PM | Distance to target: 109,464
+01/29 09:37:47 PM | Testing threshold 0.6385955810546875
+01/29 09:37:47 PM | Distance to target: 109,464
+01/29 09:37:47 PM | Testing threshold 0.6386032104492188
+01/29 09:37:47 PM | Distance to target: 109,464
+01/29 09:37:47 PM | Testing threshold 0.6386070251464844
+01/29 09:37:47 PM | Distance to target: 80,744
+01/29 09:37:47 PM | Testing threshold 0.6386051177978516
+01/29 09:37:47 PM | Distance to target: 109,464
+01/29 09:37:47 PM | Testing threshold 0.638606071472168
+01/29 09:37:47 PM | Distance to target: 80,744
+01/29 09:37:47 PM | Testing threshold 0.6386055946350098
+01/29 09:37:47 PM | Distance to target: 109,464
+01/29 09:37:47 PM | Testing threshold 0.6386058330535889
+01/29 09:37:47 PM | Distance to target: 80,744
+01/29 09:37:47 PM | Testing threshold 0.6386057138442993
+01/29 09:37:47 PM | Distance to target: 109,464
+01/29 09:37:47 PM | Testing threshold 0.6386057734489441
+01/29 09:37:47 PM | Distance to target: 80,744
+01/29 09:37:47 PM | Testing threshold 0.6386057436466217
+01/29 09:37:47 PM | Distance to target: 109,464
+01/29 09:37:47 PM | Testing threshold 0.6386057585477829
+01/29 09:37:47 PM | Distance to target: 109,464
+01/29 09:37:47 PM | Testing threshold 0.6386057659983635
+01/29 09:37:47 PM | Distance to target: 109,464
+01/29 09:37:47 PM | Testing threshold 0.6386057697236538
+01/29 09:37:47 PM | Distance to target: 109,464
+01/29 09:37:47 PM | Testing threshold 0.6386057715862989
+01/29 09:37:47 PM | Distance to target: 109,464
+01/29 09:37:47 PM | Testing threshold 0.6386057725176215
+01/29 09:37:47 PM | Distance to target: 109,464
+01/29 09:37:47 PM | Testing threshold 0.6386057729832828
+01/29 09:37:47 PM | Distance to target: 109,464
+01/29 09:37:47 PM | Testing threshold 0.6386057732161134
+01/29 09:37:47 PM | Distance to target: 109,464
+01/29 09:37:47 PM | Testing threshold 0.6386057733325288
+01/29 09:37:47 PM | Distance to target: 109,464
+01/29 09:37:47 PM | Testing threshold 0.6386057733907364
+01/29 09:37:47 PM | Distance to target: 109,464
+01/29 09:37:47 PM | Testing threshold 0.6386057734198403
+01/29 09:37:47 PM | Distance to target: 109,464
+01/29 09:37:47 PM | Testing threshold 0.6386057734343922
+01/29 09:37:47 PM | Distance to target: 109,464
+01/29 09:37:47 PM | Testing threshold 0.6386057734416681
+01/29 09:37:47 PM | Distance to target: 109,464
+01/29 09:37:47 PM | Testing threshold 0.6386057734453061
+01/29 09:37:47 PM | Distance to target: 109,464
+01/29 09:37:47 PM | Testing threshold 0.6386057734471251
+01/29 09:37:47 PM | Distance to target: 109,464
+01/29 09:37:47 PM | Testing threshold 0.6386057734480346
+01/29 09:37:47 PM | Distance to target: 109,464
+01/29 09:37:47 PM | Testing threshold 0.6386057734484893
+01/29 09:37:47 PM | Distance to target: 109,464
+01/29 09:37:47 PM | Testing threshold 0.6386057734487167
+01/29 09:37:48 PM | Distance to target: 109,464
+01/29 09:37:48 PM | Testing threshold 0.6386057734488304
+01/29 09:37:48 PM | Distance to target: 109,464
+01/29 09:37:48 PM | Testing threshold 0.6386057734488872
+01/29 09:37:48 PM | Distance to target: 109,464
+01/29 09:37:48 PM | Testing threshold 0.6386057734489157
+01/29 09:37:48 PM | Distance to target: 109,464
+01/29 09:37:48 PM | Testing threshold 0.6386057734489299
+01/29 09:37:48 PM | Distance to target: 109,464
+01/29 09:37:48 PM | Testing threshold 0.638605773448937
+01/29 09:37:48 PM | Distance to target: 109,464
+01/29 09:37:48 PM | Testing threshold 0.6386057734489405
+01/29 09:37:48 PM | Distance to target: 109,464
+01/29 09:37:48 PM | Testing threshold 0.6386057734489423
+01/29 09:37:48 PM | Distance to target: 109,464
+01/29 09:37:48 PM | Testing threshold 0.6386057734489432
+01/29 09:37:48 PM | Distance to target: 109,464
+01/29 09:37:49 PM | attribution_score[0:12]: 
+[ 1.00  1.00  0.00  0.00  0.00  0.00  0.00  0.00  0.00  1.00  0.00  1.00 ]
+[ 1.00  0.00  1.00  0.00  1.00  1.00  1.00  0.00  1.00  1.00  1.00  0.00 ]
+[ 1.00  1.00  0.00  1.00  1.00  1.00  1.00  1.00  0.00  0.00  1.00  1.00 ]
+[ 1.00  1.00  1.00  1.00  1.00  1.00  1.00  0.00  1.00  0.00  1.00  1.00 ]
+[ 1.00  1.00  1.00  0.00  1.00  1.00  0.00  0.00  1.00  1.00  1.00  1.00 ]
+[ 0.00  1.00  0.00  1.00  1.00  1.00  1.00  0.00  1.00  0.00  0.00  0.00 ]
+[ 1.00  0.00  1.00  1.00  1.00  0.00  1.00  1.00  1.00  1.00  1.00  1.00 ]
+[ 0.00  0.00  0.00  0.00  0.00  1.00  1.00  0.00  0.00  1.00  0.00  0.00 ]
+[ 0.00  0.00  0.00  0.00  1.00  0.00  0.00  0.00  1.00  0.00  0.00  1.00 ]
+[ 0.00  0.00  0.00  0.00  0.00  1.00  0.00  0.00  0.00  0.00  0.00  1.00 ]
+[ 0.00  1.00  1.00  0.00  0.00  0.00  1.00  1.00  0.00  1.00  1.00  1.00 ]
+[ 1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00 ]
+[ 1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00  1.00 ]
+
+01/29 09:37:50 PM | VGG(
+  (features): Sequential(
+    (conv0): Conv2d(3, 24, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm0): BatchNorm2d(24, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu0): ReLU(inplace=True)
+    (conv1): Conv2d(24, 53, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm1): BatchNorm2d(53, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu1): ReLU(inplace=True)
+    (pool2): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (conv3): Conv2d(53, 93, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm3): BatchNorm2d(93, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu3): ReLU(inplace=True)
+    (conv4): Conv2d(93, 106, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm4): BatchNorm2d(106, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu4): ReLU(inplace=True)
+    (pool5): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (conv6): Conv2d(106, 168, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm6): BatchNorm2d(168, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu6): ReLU(inplace=True)
+    (conv7): Conv2d(168, 149, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm7): BatchNorm2d(149, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu7): ReLU(inplace=True)
+    (conv8): Conv2d(149, 162, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm8): BatchNorm2d(162, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu8): ReLU(inplace=True)
+    (pool9): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (conv10): Conv2d(162, 186, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm10): BatchNorm2d(186, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu10): ReLU(inplace=True)
+    (conv11): Conv2d(186, 66, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm11): BatchNorm2d(66, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu11): ReLU(inplace=True)
+    (conv12): Conv2d(66, 131, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm12): BatchNorm2d(131, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu12): ReLU(inplace=True)
+    (pool13): MaxPool2d(kernel_size=2, stride=2, padding=0, dilation=1, ceil_mode=False)
+    (conv14): Conv2d(131, 332, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm14): BatchNorm2d(332, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu14): ReLU(inplace=True)
+    (conv15): Conv2d(332, 463, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm15): BatchNorm2d(463, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu15): ReLU(inplace=True)
+    (conv16): Conv2d(463, 501, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (norm16): BatchNorm2d(501, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu16): ReLU(inplace=True)
+  )
+  (classifier): Sequential(
+    (linear1): Linear(in_features=501, out_features=512, bias=True)
+    (norm1): BatchNorm1d(512, eps=1e-05, momentum=0.1, affine=True, track_running_stats=True)
+    (relu1): ReLU(inplace=True)
+    (linear2): Linear(in_features=512, out_features=10, bias=True)
+  )
+)
+01/29 09:37:51 PM | ----------------------------------------
+01/29 09:37:51 PM | Performances input model:
+01/29 09:37:51 PM |  - flops: 314,294,272
+01/29 09:37:51 PM |  - params: 14,991,946
+01/29 09:37:51 PM |  - accuracy: 93.95999908447266
+01/29 09:37:51 PM | ----------------------------------------
+01/29 09:37:51 PM | Performances pseudo-pruned model:
+01/29 09:37:51 PM |  - flops: 314,294,272
+01/29 09:37:51 PM |  - params: 14,991,946
+01/29 09:37:51 PM |  - accuracy: 22.729999542236328
+01/29 09:37:51 PM | ----------------------------------------
+01/29 09:37:51 PM | Performances pruned model:
+01/29 09:37:51 PM |  - flops: 108,614,748
+01/29 09:37:51 PM |  - params: 5,340,486
+01/29 09:37:51 PM |  - accuracy: 22.729999542236328
+01/29 09:37:51 PM | ----------------------------------------
+01/29 09:37:51 PM | Total time: 14.47s

@@ -1,0 +1,56 @@
+VGG
+19.79 (±6.88) (max: 26.38 at seed 02) (03 run) at nbbtchs3
+24.59 (±5.07) (max: 31.51 at seed 00) (03 run) at nbbtchs4
+35.37 (±4.08) (max: 40.94 at seed 00) (03 run) at nbbtchs5
+45.26 (±6.20) (max: 52.43 at seed 02) (03 run) at nbbtchs6
+44.20 (±5.94) (max: 52.60 at seed 02) (03 run) at nbbtchs7
+44.24 (±5.91) (max: 52.60 at seed 02) (03 run) at nbbtchs8
+47.42 (±5.60) (max: 52.60 at seed 02) (03 run) at nbbtchs9
+53.80 (±2.25) (max: 56.96 at seed 02) (03 run) at nbbtchs10
+65.00 (±1.13) (max: 66.56 at seed 02) (03 run) at nbbtchs15
+67.94 (±3.89) (max: 73.15 at seed 01) (03 run) at nbbtchs20
+75.94 (±1.60) (max: 77.85 at seed 01) (03 run) at nbbtchs30
+78.01 (±1.27) (max: 79.76 at seed 01) (03 run) at nbbtchs40
+77.81 (±1.46) (max: 79.81 at seed 01) (03 run) at nbbtchs50
+77.88 (±2.73) (max: 79.90 at seed 00) (03 run) at nbbtchs60
+79.09 (±0.85) (max: 80.12 at seed 02) (03 run) at nbbtchs80
+80.67 (±0.67) (max: 81.25 at seed 01) (03 run) at nbbtchs100
+81.26 (±0.72) (max: 82.06 at seed 01) (03 run) at nbbtchs130
+80.91 (±0.39) (max: 81.43 at seed 02) (03 run) at nbbtchs150
+82.26 (±0.47) (max: 82.83 at seed 02) (03 run) at nbbtchs180
+82.08 (±0.66) (max: 82.73 at seed 00) (03 run) at nbbtchs200
+81.64 (±0.60) (max: 82.40 at seed 02) (03 run) at nbbtchs230
+82.82 (±0.29) (max: 83.23 at seed 01) (03 run) at nbbtchs250
+82.28 (±0.71) (max: 83.25 at seed 01) (03 run) at nbbtchs275
+82.44 (±0.45) (max: 82.90 at seed 01) (03 run) at nbbtchs300
+
+RESNET56
+24.15 (±4.74) (max: 28.58 at seed 02) (03 run) at nbbtchs3
+22.39 (±3.89) (max: 25.28 at seed 02) (03 run) at nbbtchs4
+33.43 (±7.32) (max: 38.93 at seed 00) (03 run) at nbbtchs5
+40.16 (±6.81) (max: 48.44 at seed 02) (03 run) at nbbtchs6
+47.85 (±6.96) (max: 54.70 at seed 02) (03 run) at nbbtchs7
+56.22 (±4.97) (max: 62.67 at seed 02) (03 run) at nbbtchs8
+63.83 (±2.95) (max: 67.84 at seed 00) (03 run) at nbbtchs9
+66.04 (±2.25) (max: 67.84 at seed 00) (03 run) at nbbtchs10
+69.00 (±3.25) (max: 73.30 at seed 01) (03 run) at nbbtchs15
+66.47 (±6.21) (max: 73.30 at seed 01) (03 run) at nbbtchs20
+75.88 (±1.39) (max: 77.83 at seed 02) (03 run) at nbbtchs30
+79.24 (±1.71) (max: 81.62 at seed 02) (03 run) at nbbtchs40
+79.09 (±1.61) (max: 81.31 at seed 02) (03 run) at nbbtchs50
+79.13 (±1.57) (max: 81.16 at seed 02) (03 run) at nbbtchs60
+80.43 (±0.66) (max: 81.01 at seed 00) (03 run) at nbbtchs80
+81.98 (±1.08) (max: 83.43 at seed 01) (03 run) at nbbtchs100
+83.48 (±0.61) (max: 84.10 at seed 01) (03 run) at nbbtchs130
+83.62 (±0.34) (max: 84.08 at seed 02) (03 run) at nbbtchs150
+83.93 (±0.76) (max: 84.50 at seed 01) (03 run) at nbbtchs180
+84.47 (±0.44) (max: 85.02 at seed 01) (03 run) at nbbtchs200
+84.42 (±0.29) (max: 84.83 at seed 02) (03 run) at nbbtchs230
+84.53 (±0.25) (max: 84.88 at seed 02) (03 run) at nbbtchs250
+84.82 (±0.25) (max: 85.15 at seed 02) (03 run) at nbbtchs275
+84.70 (±0.84) (max: 85.66 at seed 02) (03 run) at nbbtchs300
+
+
+
+
+

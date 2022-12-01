@@ -1,0 +1,29 @@
+2022-01-29-21:46:58
+
+output_dir: result/rebuttal/nb_epoch/vgg/nbbtchs30/seed_01
+loaded_model_path: ./checkpoints/cifar10/vgg_16_bn.pt
+resume: False
+test_only: False
+mode: prune
+batch_size: 64
+nb_batches: 30
+Mflops_target: None
+lr: 0.6
+momentum: 0.9
+beta: 6
+gamma: 0.4
+gpu: 0
+num_workers: 4
+dataset: cifar10
+arch: vgg_16_bn
+save_plot: False
+seed: 1
+lr_finetuning: 0.02
+epoch_finetuning: 200
+wd: 0.002
+data_dir: ./data/cifar10/
+print_freq: 200
+num_classes: 10
+device_ids: [0]
+device: cuda:0
+
