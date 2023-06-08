@@ -14,7 +14,7 @@ def get_args(args=sys.argv[1:]):
     parser.add_argument(
         '--loaded_model_path',
         type=str,
-        default='./checkpoints/',
+        default='./checkpoints/classification/',
         help='Path to the pretrain model.\n \
             If --loaded_model_path is a directory, then by default the loaded file will be arch_name.pt')
 

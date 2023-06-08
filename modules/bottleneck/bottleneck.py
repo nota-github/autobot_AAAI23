@@ -13,7 +13,7 @@ class Bottleneck(nn.Module):
         - module_type: type of M (Conv2d, Linear, BatchNorm, etc...)
         - info: info on M necessary to compute the FLOPS
         - lambda_in: list of lambda masks that restrict the input flow of M
-        - lamb_out: list of of lambda masks that restrict the output flow of M
+        - lamb_out: list of lambda masks that restrict the output flow of M
 
     Remarks:
         - if you don't want the module output to be pruned, use lamb_out=None

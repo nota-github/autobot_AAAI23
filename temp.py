@@ -1,27 +1,55 @@
 import os
-import time
-import matplotlib.pyplot as plt
+import time, datetime
+import utils.common as utils
+from utils.parser import get_args
 
 import torch
 import torch.nn as nn
+import torch.backends.cudnn as cudnn
 import numpy as np
 
-from models.vgg import vgg_16_bn
-from models.resnet_cifar10 import resnet_56, resnet_110
-from models.resnet_imgnet import resnet_50
-from models.googlenet import googlenet
-from models.densenet import densenet_40
+import matplotlib.pyplot as plt
+
+from models.resnet_cifar10 import resnet_56
 
 from collections import OrderedDict
 from dataset.dataset_loader import load_data
 import utils.common as utils
 from modules.bottleneck.module_info import ModuleInfo, ModulesInfo
 from utils.arch_modif import prune_layer, get_module_in_model
-from utils.model_pruning import prune
 from utils.model_loading import load
 from modules.attribution.bottleneck import BottleneckReader
 from utils.calc_flops import get_flops
 from thop import profile
+
+
+args = get_args()
+
+# Data Acquisition
+args.print_freq = (256*50)//args.batch_size  # CIFAR-10
+args.num_classes = 10
+
+os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
+args.device_ids = list(map(int, args.gpu.split(',')))
+
+torch.manual_seed(args.seed)  ##for cpu
+torch.cuda.manual_seed(args.seed)  ##for gpu
+
+if not os.path.isdir(args.output_dir):
+    os.makedirs(args.output_dir)
+
+args.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+utils.record_config(args)
+now = datetime.datetime.now().strftime('%Y-%m-%d-%H:%M:%S')
+logger = utils.get_logger(os.path.join(args.output_dir, 'logger'+now+'.log'))
+
+def main():
+    cudnn.benchmark = True
+    cudnn.enabled=True
+
+    tuner = Finetuner(args, logger) #import the network in a predefined class
+    tuner.prune_model()
 
 class Finetuner:
     def __init__(self, args, logger=None):
@@ -30,22 +58,11 @@ class Finetuner:
         self.res = OrderedDict()
 
         # load training data
-        self.input_image_size = {
-            "cifar10": 32,        # CIFAR-10
-            "imagenet": 224,      # ImageNet
-        }[self.args.dataset]
-
+        self.input_image_size = 32 # CIFAR-10
         self.train_loader, self.val_loader = load_data(self.args)
 
-        if self.args.dataset == 'imagenet': #ImageNet
-            CLASSES = 1000 #label_smooth: 0.1
-            self.criterion = utils.CrossEntropyLabelSmooth(CLASSES, 0.1).cuda()
-        else: 
-            self.criterion = nn.CrossEntropyLoss().cuda()
-
+        self.criterion = nn.CrossEntropyLoss().cuda()
         self.load_model()
-
-        
 
     #================================ MAIN CODE
 
@@ -70,37 +87,10 @@ class Finetuner:
         return modules, conv_idx
 
     def compute_norm(self, layer_name, norm_type='nuclear'):
-        """
-            Args:
-                - layer_name: name of the layer in the model
-                - norm_type: norm to apply. Options are 'l1', 'l2', 'nuclear' or 'none'
-            Return a list of norms for the filters in the layer layer_name.
-        """
         weights = get_module_in_model(self.model, layer_name).weight.data.cpu().detach().numpy() #weight를 얻고
-        if norm_type=='none': return [0.9]*weights.shape[0] #normal은 여기 통과 (output channel 갯수 만큼)
-        norm = []
-        for i in range(weights.shape[0]):
-            weight = weights[i]           # dim (Cin*K*K)
-            weight = weight.reshape(weight.shape[0], -1) # dim (Cin)*(K*K)
-            if norm_type=='l1':
-                norm.append(np.linalg.norm(weight, ord=1)) 
-            elif norm_type=='nuclear':
-                _, s, _ = np.linalg.svd(weight)
-                norm.append(s.sum())
-            elif norm_type=='l2':
-                norm.append(np.linalg.norm(weight, ord=2))
-        # pseudo-normalize
-        eps = 0.05
-        norm /= (np.max(norm) + eps)
-        return norm
+        return [0.9]*weights.shape[0] #normal은 여기 통과 (output channel 갯수 만큼)
 
     def select_index_flops(self, attribution_score, target_flops, r, layer_to_prune):
-        """
-            Args:
-                - attribution_score: attribution score for each filter in each layer (list of list)
-                - target_flops: target flops for the pruned model 
-                - r: BottleneckReader
-        """
         with torch.no_grad():
             # 1. we find a threshold to have the right number of flops, using dychotomy
             self.logger.info('Looking for optimal threshold...')
@@ -137,9 +127,7 @@ class Finetuner:
 
             return preserved_indexes_all
 
-
     def prune_model(self):
-    
         # generate modules info
         modules, conv_idx = self.get_modules()
 
@@ -147,28 +135,8 @@ class Finetuner:
         maxflops, _ = self.compute_flops_and_params()
         # index of layers to prune and target FLOPS (for each architecture)
         layers_to_prune = list(np.arange(len(conv_idx)))
-        if 'vgg_16' in self.args.arch:
-            flops_target = 108.61 * 10**6 if self.args.Mflops_target is None else self.args.Mflops_target * 10**6
-            # flops_target = 145.61 * 10**6 if self.args.Mflops_target is None else self.args.Mflops_target * 10**6
-            # flops_target = 72.77 * 10**6 if self.args.Mflops_target is None else self.args.Mflops_target * 10**6
-        elif 'repvgg_A0' in self.args.arch:
-            flops_target = 500. * 10**6  if self.args.Mflops_target is None else self.args.Mflops_target * 10**6
-        elif 'repvgg_B0' in self.args.arch:
-            flops_target = 900. * 10**6  if self.args.Mflops_target is None else self.args.Mflops_target * 10**6
-        elif self.args.arch == 'resnet_56': #여기 통과
-            # layers_to_prune = list(range(1,55,2))
-            flops_target = 55.84 * 10**6 if self.args.Mflops_target is None else self.args.Mflops_target * 10**6
-        elif self.args.arch == 'resnet_110':
-            # layers_to_prune = list(range(1,109,2))
-            flops_target = 85.3 * 10**6 if self.args.Mflops_target is None else self.args.Mflops_target * 10**6     
-        elif self.args.arch == 'densenet_40':
-            # flops_target = 167.41 * 10**6 if self.args.Mflops_target is None else self.args.Mflops_target * 10**6
-            flops_target = 128.11 * 10**6 if self.args.Mflops_target is None else self.args.Mflops_target * 10**6
-        elif self.args.arch == 'googlenet':
-            flops_target = 450. * 10**6 if self.args.Mflops_target is None else self.args.Mflops_target * 10**6
-        elif self.args.arch == 'resnet_50':
-            flops_target = 1700. * 10**6 if self.args.Mflops_target is None else self.args.Mflops_target * 10**6
-            # flops_target = 960. * 10**6 if self.args.Mflops_target is None else self.args.Mflops_target * 10**6
+        # layers_to_prune = list(range(1,55,2))
+        flops_target = 55.84 * 10**6 if self.args.Mflops_target is None else self.args.Mflops_target * 10**6
         assert(flops_target < maxflops)
         # pruning ratio
         self.logger.info(f"FLOPS pruning ratio is {(1-(flops_target/maxflops)):.2f}")
@@ -212,45 +180,6 @@ class Finetuner:
 
         reader.remove_layer()
 
-        # prune
-        prune(self.model if len(self.args.device_ids) == 1 else self.model.module, preserved_indexes_all, layers_to_prune, self.args.arch)
-
-        # save pruned model
-        filename = os.path.join(self.args.output_dir, 'pruned.pt')
-        torch.save({'state_dict': self.model.state_dict(), 'preserved_idx': preserved_indexes_all}, filename)
-
-        self.logger.info(self.model)
-        self.update_results('after_pruning', 'Performances pruned model')
-
-    def finetune(self):
-        epochs = self.args.epoch_finetuning
-        optimizer = torch.optim.SGD(self.model.parameters(), lr=self.args.lr_finetuning, momentum=self.args.momentum, weight_decay=self.args.wd)
-        if self.optimizer_state_dict is not None: optimizer.load_state_dict(self.optimizer_state_dict)
-        if self.args.dataset == "imagenet":
-            scheduler = utils.CosLR(optimizer, T_max=epochs, len_iter=len(self.train_loader))
-        else:
-            scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epochs)
-        acc = self.train(optimizer, scheduler, epochs)
-        self.update_results('after_finetune', 'Performances finetuned model')
-
-        if self.args.save_plot:
-            self.plot_acc(acc, title="Acc vs epoch", filename=f"plot_{self.args.arch}")
-
-    def save_onnx(self):
-        # Export the model
-        self.model.eval()
-        x = torch.randn(1, 3, self.input_image_size, self.input_image_size, requires_grad=True).cuda()
-        torch.onnx.export(self.model if len(self.args.device_ids) == 1 else self.model.module,  # model being run
-                          x,  # model input (or a tuple for multiple inputs)
-                          os.path.join(self.args.output_dir, 'model_best.onnx'),  # where to save the model (can be a file or file-like object)
-                          export_params=True,  # store the trained parameter weights inside the model file
-                          opset_version=11,  # the ONNX version to export the model to
-                          do_constant_folding=True,  # whether to execute constant folding for optimization
-                          input_names=['input'],  # the model's input names
-                          output_names=['output'])  # the model's output names
-                        #   dynamic_axes={'input': {0: 'batch_size'},  # variable length axes
-                        #                 'output': {0: 'batch_size'}})
-
     #================================ LOAD/TRAIN/VALIDATE
     def load_model(self):
         """
@@ -266,14 +195,11 @@ class Finetuner:
         self.preserved_idx = checkpoint['preserved_idx'] if 'preserved_idx' in checkpoint.keys() else None
 
         # 1) generate arch
-        self.logger.info('-'*40)
         self.logger.info('==> Building model...')
         self.model = eval(self.args.arch)()
 
         # 2) load weights
-        self.logger.info('-'*40)
         self.logger.info('==> Loading weights into the model...')
-        
         new_state_dict = OrderedDict()
         for k, v in state_dict.items():
             new_key = k.replace('module.', '')
@@ -288,23 +214,12 @@ class Finetuner:
             # if loading doesn't work, we assume the loaded model is pruned
             load(self.model, state_dict, self.args.arch, self.preserved_idx)
 
-
-        # for multi-GPU
-        if len(self.args.device_ids) > 1:
-            self.logger.info('Option: multi-GPU')
-            device_ids = []
-            for i in range(len(self.args.device_ids)):
-                device_ids.append(i)
-            self.model = nn.DataParallel(self.model, device_ids=device_ids)
-
         self.model.to(self.args.device)
 
         # 3) update results + show various info
-        self.logger.info('-'*40)
         self.logger.info(self.model) # display model arch
 
         self.update_results('loading', 'Performances input model')
-
 
     def train(self, optimizer, scheduler, total_epochs):
         if total_epochs ==0: return
@@ -440,24 +355,9 @@ class Finetuner:
                     .format(top1=top1, top5=top5))
 
         return losses.avg, top1.avg, top5.avg
-
-
-
+    
     #================================ SHOW PERFORMANCES
-
-
-
-    def update_results(self, key, description):
-        """
-            Save the current performances of the model.
-            Pseudo code:
-                new_res = {'measure1_name': measure1_value, 'measure2_name': measure2_value, ..}
-                self.res[key] = [description, new_res]
-            These results can be dispayed at any time with show_results().
-            Args:
-                - key (str): the key associated to the new results in the 'res' dictionary.
-                - description (str): description of the result (example: 'Performances input model')
-        """
+    def update_results(self, key, description): #Save the current performances of the model.
         new_res = OrderedDict()
         self.model.to(self.args.device)
         if profile is not None:
@@ -465,12 +365,7 @@ class Finetuner:
         new_res['accuracy'] = self.validate(self.val_loader, self.model, self.criterion, mute=True)[1] # check the accuracy before decomposition
         self.res[key] = [description, new_res]
 
-    def show_results(self, keys=None):
-        """
-            Display the results which have been saved with.
-            Args:
-                - keys (str or list): if None, all the results are displayed. Else, display the results at the given keys.
-        """
+    def show_results(self, keys=None): #Display the results which have been saved with.        
         if isinstance(keys, str): keys = [keys]
         elif keys is None: keys = self.res.keys()
 
@@ -481,47 +376,11 @@ class Finetuner:
             for key_res in res[1]:   # display results for this key
                 self.logger.info(f' - {key_res}: {res[1][key_res]:,}')
 
-    def plot_acc(self, accuracy, epoch=None, acc_before_compression=None, title="Acc vs epoch", subtitle=None, filename=None, plot_best=False):
-        """
-            Save a plot of the accuracy evolution.
-            Params:
-                - accuracy: list of float
-                - epoch: list of int, such that accuracy[i] gives the accuracy at epoch epoch[i].
-                         If epoch=None, then we assume that accuracy[i] gives the accuracy at epoch i.
-                - acc_before_compression: float corresponding to the accuracy before compression
-                - title: main title of the graph
-                - subtitle: supplementary title (to indicate used param, for instance)
-                - filename: name of the png file (do not specify the extension)
-        """
-        if epoch is None: epoch=np.arange(len(accuracy))
-        fig = plt.figure()
-        plt.plot(epoch, accuracy)
-        if acc_before_compression is not None:
-            plt.axhline(y=acc_before_compression, color='r', linestyle='-', label='acc before compression')
-        if plot_best:
-            plt.axhline(y=np.max(accuracy), color='b', linestyle='-', label='best') # best accuracy
-        # if acc_before_compression is not None:
-        #     ymin = max(min(np.min(accuracy), acc_before_compression)-1, 0)
-        #     ymax = min(max(np.max(accuracy), acc_before_compression)+1, 100)
-        ymin = 0
-        ymax = 100
-        plt.ylim(ymin, ymax)
-        plt.legend()
-        plt.xlabel('epoch')
-        plt.ylabel('accuracy')
-        
-        plt.title(title + ('' if subtitle is None else ('\n'+subtitle)))
-        filepath = f'{self.args.output_dir}/{(title.lower().replace(" ", "_") if filename is None else filename)}.png' 
-        fig.savefig(filepath)
-
-    def compute_flops_and_params(self):
-        """
-            Compute flops and number of parameters for the loaded model
-        """
+    def compute_flops_and_params(self): #Compute flops and number of parameters for the loaded model
         input_image = torch.randn(1, 3, self.input_image_size, self.input_image_size).cuda()
-        if len(self.args.device_ids) > 1:
-            flops, params = profile(self.model.module.cuda(), inputs=(input_image,), verbose=False)
-        else:
-            flops, params = profile(self.model, inputs=(input_image,), verbose=False)
+        flops, params = profile(self.model, inputs=(input_image,), verbose=False)
         self.model.to(self.args.device)
         return [int(flops), int(params)]
+
+if __name__ == '__main__':
+    main()
